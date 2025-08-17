@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 // This is how you define a class in PHP
@@ -55,16 +56,23 @@ $tasks = [
     ),
 ];
 
+Route::get('/', function () {
+    return redirect()->route('task.index');
+});
 
 // This route displays the welcome page with a view
-Route::get('/', function () use ($tasks) {
+Route::get('/tasks', function () use ($tasks) {
     return view('index', [
         'tasks' => $tasks
     ]);
 })->name('task.index');
 
-Route::get('/{id}', function ($id) {
-    return "One single task";
+Route::get('/tasks/{id}', function ($id) use ($tasks) {
+    $task = collect($tasks)->firstWhere('id', $id);
+    if (!$task) {
+        abort(Response::HTTP_NOT_FOUND);
+    }
+    return view('show', ['task' => $task]);
 })->name('task.show');
 
 // This route returns a simple string response
