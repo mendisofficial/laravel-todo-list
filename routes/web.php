@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 // This route displays the welcome page with a view
 Route::get('/', function () {
-    return view('welcome');
+    return view('index', [
+        'name' => 'Chathusha Mendis'
+    ]);
 });
 
 // This route returns a simple string response
