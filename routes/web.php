@@ -1,19 +1,20 @@
 <?php
 
 use App\Models\Task as ModelsTask;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('task.index');
 });
 
-// This route displays the welcome page with a view
 Route::get('/tasks', function () {
     return view('index', [
         'tasks' => ModelsTask::latest()->get()
     ]);
 })->name('task.index');
+
+Route::view('/tasks/create', 'create')->name('task.create');
 
 Route::get('/tasks/{id}', function ($id) {
     return view('show', [
@@ -21,25 +22,10 @@ Route::get('/tasks/{id}', function ($id) {
     ]);
 })->name('task.show');
 
-// This route returns a simple string response
-// Route::get('/hello', function () {
-//     return 'Hello, World!';
-// })->name('hello');
+Route::post('/tasks', function (Request $request) {
+    dd($request->all());
+})->name('task.store');
 
-// This route redirects to the hello route
-// Route::get('hallo', function () {
-//     return redirect()->route('hello');
-// });
-
-// This is how dynamic route parameters work
-// Route::get('greet/{name}', function ($name) {
-//     return 'Hello, ' . $name . '!';
-// });
-
-// This is how fallback routes work
 Route::fallback(function () {
     return "I'm the fallback route";
 });
-
-// To view all the routes
-// php artisan route:list
