@@ -42,6 +42,13 @@ Route::put('/tasks/{task}', function (ModelsTask $task, TaskRequest $request) {
         ->with('success', 'Task edited successfully!');
 })->name('task.update');
 
+Route::delete('/tasks/{task}', function (ModelsTask $task) {
+    $task->delete();
+
+    return redirect()->route('task.index')
+        ->with('success', 'Task deleted successfully!');
+})->name('task.destroy');
+
 Route::fallback(function () {
     return "I'm the fallback route";
 });
